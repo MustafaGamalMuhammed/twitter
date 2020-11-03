@@ -1,9 +1,23 @@
 {% extends './base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
-    <form action="{% url 'signin' %}" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Signin">
-    </form>    
+    <div class="row authentication signin">
+        <form action="{% url 'signin' %}" method="post" class="mt-5 mx-auto col-6">
+            {% csrf_token %}
+    
+            {{ form|crispy }}
+            
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+    
+            <button type="submit" class="btn btn-primary form-control">Signin</button>
+        </form>    
+    </div>
 {% endblock content %}
