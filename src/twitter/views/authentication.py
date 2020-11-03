@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, reverse
 from django.contrib import auth
 from django.contrib.auth import views
 from django.contrib.auth.decorators import login_required
@@ -9,7 +9,7 @@ from twitter.forms import SignupForm
 def signup_view(request):
     if request.method == "POST":
         form = SignupForm(request.POST)
-        if forms.is_valid():
+        if form.is_valid():
             user = form.save()
             return redirect("signin")
         else:
