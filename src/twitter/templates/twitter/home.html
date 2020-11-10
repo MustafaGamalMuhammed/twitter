@@ -5,10 +5,22 @@
 <div class="home">
     <div class="row">
         <div class="col-1">
-            navigate
+            <ul>
+                <li><a href="{% url 'home' %}" class="nav-link"><i class="fas fa-home"></i></a></li>
+            </ul>
         </div>
         <div class="col-7 tweets">
-            tweets
+            <h2>Home</h2>
+            <div class="tweet-form-section row">
+                <div class="col-1"></div>
+                <form class="tweet-form col-11">
+                    <input type="hidden" name="author" value="{{ user.id }}">
+                    <textarea name="content" cols="30" rows="10" placeholder="What's happening?"></textarea>
+                    <div class="tweet-form-submit">
+                        <input type="submit" value="Tweet" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
         </div>
         <div class="col-4">
             what is happening
