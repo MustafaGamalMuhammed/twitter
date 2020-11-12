@@ -10,6 +10,7 @@ authentication_urlpatterns = [
 
 tweet_urlpatterns = [
     path('post_tweet/', views.post_tweet, name="post_tweet"),
+    path('search_handlers/<str:query>/', views.search_handlers, name="search_handlers"),
 ]
 
 home_urlpatterns = [
