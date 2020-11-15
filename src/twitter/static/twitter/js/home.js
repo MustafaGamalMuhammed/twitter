@@ -52,10 +52,19 @@ let home = new Vue({
             this.tweetContent = this.tweetContent.slice(0, this.currentHandler.index) +  
                 this.tweetContent.slice(this.currentHandler.index).replace(this.currentHandler[0], `@${searchResult}`);
             this.clearHandlerSearchResults();
-        }
+        },
+        getTweets: function() {
+            axios.get('/get_tweets/')
+            .then(res => {
+                console.log(res.data);
+                this.tweets = res.data;
+            })
+            .catch(err => console.log(err))
+        },
     },
     mounted: function() {
         axios.defaults.headers['X-CSRFToken'] = Cookies.get('csrftoken');
+        this.getTweets();
     },
     watch: {
         tweetContent: function(newVal, oldVal) {

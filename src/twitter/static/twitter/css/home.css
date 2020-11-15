@@ -44,6 +44,7 @@
 .tweet-form-submit {
     display: flex;
     justify-content: flex-end;
+    margin: 5px 0;
 }
 
 #handler-search-results {
@@ -54,6 +55,11 @@
 
 .handler-search-result {
     padding: 3px;
+    color: rgb(0, 110, 255);
+}
+
+.handler-search-result:hover {
+    background-color: aqua;
 }
 
 .handler-search-result:hover {
