@@ -45,3 +45,17 @@
     display: flex;
     justify-content: flex-end;
 }
+
+#handler-search-results {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.handler-search-result {
+    padding: 3px;
+}
+
+.handler-search-result:hover {
+    cursor: pointer;
+}

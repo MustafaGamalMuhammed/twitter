@@ -4,6 +4,8 @@ let home = new Vue({
         return {
             tweets: [],
             tweetContent: '',
+            currentHandler: null,
+            handlerSearchResults: [],
         };
     },
     methods: {
@@ -28,17 +30,28 @@ let home = new Vue({
             if(newMentions.length == oldMentions.length) {
                 for(let i = 0; i < newMentions.length; i++) {
                     if(newMentions[i][0] != oldMentions[i][0]) {
-                        return newMentions[i][0].slice(1);
+                        return newMentions[i];
                     }
                 }
             }
         },
         searchHandlers: function(handler) {
-            axios.get(`/search_handlers/${handler}/`,)
+            axios.get(`/search_handlers/${handler[0].slice(1)}/`,)
             .then(res => {
                 console.log(res.data);
+                this.handlerSearchResults = res.data;
             })
             .catch(err => console.log(err))
+        },
+        clearHandlerSearchResults: function() {
+            this.handlerSearchResults = [];
+            this.currentHandler = null;
+            document.getElementById("content").focus();
+        },
+        replaceHandler: function(searchResult) {
+            this.tweetContent = this.tweetContent.slice(0, this.currentHandler.index) +  
+                this.tweetContent.slice(this.currentHandler.index).replace(this.currentHandler[0], `@${searchResult}`);
+            this.clearHandlerSearchResults();
         }
     },
     mounted: function() {
@@ -50,6 +63,9 @@ let home = new Vue({
         
             if(handler) {
                 this.searchHandlers(handler);
+                this.currentHandler = handler;
+            } else if(this.handlerSearchResults.length > 0) {
+                this.clearHandlerSearchResults();
             }
         }
     },

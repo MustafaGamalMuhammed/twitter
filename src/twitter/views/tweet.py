@@ -14,6 +14,6 @@ def post_tweet(request):
 @api_view(['GET'])
 def search_handlers(request, query):
     queryset = Profile.objects.filter(handler__icontains=query)
-    data = queryset.values_list('handler')
+    data = queryset.values_list('handler', flat=True)
 
     return Response(data, status=status.HTTP_200_OK)
