@@ -43,9 +43,11 @@ def get_data_from_tweets(tweets):
     
     for tweet in tweets:
         d = {}
-        d['id'] = tweet.id
-        d['content'] = tweet.content
-        d['author'] = tweet.author.id
+        d['tweet_id'] = tweet.id
+        d['tweet_content'] = tweet.content
+        d['tweet_author_id'] = tweet.author.id
+        d['tweet_author_handler'] = tweet.author.handler
+        d['tweet_author_user_username'] = tweet.author.user.username
         data.append(d)
     
     return data
@@ -54,8 +56,7 @@ def get_data_from_tweets(tweets):
 @login_required
 @api_view(['GET'])
 def get_tweets(request):
-    tweets = request.user.profile.mentions.all()
+    tweets = request.user.profile.mentions.all().order_by('created_at')
     data = get_data_from_tweets(tweets)
 
     return Response(data, status=status.HTTP_200_OK)
-    

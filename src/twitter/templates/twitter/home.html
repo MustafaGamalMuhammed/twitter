@@ -4,31 +4,11 @@
 {% block content %}
 <div class="home" id="home">
     <div class="row">
-        <div class="col-1 navigation">
-            <ul>
-                <li><a href="{% url 'home' %}" class="nav-link"><i class="fas fa-home"></i></a></li>
-            </ul>
-        </div>
-        <div class="col-7 tweets">
-            <h2>Home</h2>
-            <div class="tweet-form-section row">
-                <div class="col-1"></div>
-                <form class="tweet-form col-11" id="tweet-form" @submit.prevent="postTweet">
-                    <input type="hidden" name="author" value="{{ user.id }}">
-                    <textarea v-model:value="tweetContent" name="content" id="content" cols="30" rows="10" placeholder="What's happening?"></textarea>
-                    <ul id="handler-search-results">
-                        <li 
-                            v-for="result in handlerSearchResults" 
-                            @click="replaceHandler(result)"
-                            class="handler-search-result">
-                            @<span v-html="result"></span>
-                        </li>
-                    </ul>
-                    <div class="tweet-form-submit">
-                        <input type="submit" value="Tweet" class="btn btn-primary">
-                    </div>
-                </form>
-            </div>
+        {% include './navigation.html' %}
+        <div class="col-7 tweets-section">
+            <h2>HOME</h2>
+            {% include './tweet-form.html' %}
+            {% include './tweets.html' %}
         </div>
         <div class="col-4">
             what is happening

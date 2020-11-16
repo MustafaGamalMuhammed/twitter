@@ -3,7 +3,8 @@
     margin: auto;
 }
 
-.navigation {
+.home h2 {
+    text-align: center;
 }
 
 .navigation ul {
@@ -16,8 +17,12 @@
     font-size: 30px;
 }
 
-.tweets {
+.tweets-section {
     border: 1px solid #eee;
+}
+
+.tweet-form-section {
+    border-bottom: 1px solid #eee;
 }
 
 .tweet-form {

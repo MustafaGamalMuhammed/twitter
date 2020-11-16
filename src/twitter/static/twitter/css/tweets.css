@@ -1,0 +1,17 @@
+.tweet-interactions {
+    display: flex;
+    justify-content: space-around;
+}
+
+.tweet {
+    border-bottom: 1px solid #eee;
+    padding: 5px;
+}
+
+.tweet p {
+    margin: 0;
+}
+
+.tweet-content {
+    padding: 5px;
+}
