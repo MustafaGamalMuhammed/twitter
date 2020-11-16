@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.decorators import login_required
 from twitter.models import Profile, Tweet
+from twitter.forms import TweetForm
 import re
 
 
@@ -18,13 +19,11 @@ def get_all_profiles_mentioned_in_tweet(content:str):
 @login_required
 @api_view(['POST'])
 def post_tweet(request):
-    author = request.data.get('author')
-    content = request.data.get('content')
-    mentions = get_all_profiles_mentioned_in_tweet(content)
-
-    tweet = Tweet(author_id=author, content=content)
-    tweet.save()
-    tweet.mentions.set(mentions)
+    form = TweetForm(request.data)
+    if form.is_valid():
+        tweet = form.save()
+        mentions = get_all_profiles_mentioned_in_tweet(request.data.get('content'))
+        tweet.mentions.set(mentions)
 
     return Response(data={}, status=status.HTTP_201_CREATED)
 
@@ -73,3 +72,4 @@ def get_tweets(request):
     data = get_data_from_tweets(tweets)
 
     return Response(data, status=status.HTTP_200_OK)
+
