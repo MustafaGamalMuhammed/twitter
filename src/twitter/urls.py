@@ -11,6 +11,7 @@ authentication_urlpatterns = [
 tweet_urlpatterns = [
     path('post_tweet/', views.post_tweet, name="post_tweet"),
     path('search_handlers/<str:query>/', views.search_handlers, name="search_handlers"),
+    path('search_hashtags/<str:query>/', views.search_hashtags, name="search_hashtags"),
     path('get_tweets/', views.get_tweets, name="get_tweets"),
     path('retweet/', views.retweet, name="retweet"),
     path('like/', views.like, name="like"),

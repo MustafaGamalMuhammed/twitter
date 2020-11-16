@@ -2,18 +2,34 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.decorators import login_required
-from twitter.models import Profile, Tweet
+from twitter.models import Profile, Tweet, Hashtag
 from twitter.forms import TweetForm
 import re
 
 
 def get_all_profiles_mentioned_in_tweet(content:str):
     mentions = re.findall(r'@(\w+)', content)
+    
     if mentions:
         profiles = Profile.objects.filter(handler__in=mentions)
     else:
         profiles = []
+    
     return profiles
+
+
+def get_all_hashtags_in_tweet(content:str):
+    hashtags = re.findall(r'#(\w+)', content)
+    results = []
+
+    if hashtags:
+        for hashtag in hashtags:
+            h, _ = Hashtag.objects.get_or_create(name=hashtag)
+            results.append(h)
+    else:
+        results = []
+
+    return results
 
 
 @login_required
@@ -22,8 +38,12 @@ def post_tweet(request):
     form = TweetForm(request.data)
     if form.is_valid():
         tweet = form.save()
+
         mentions = get_all_profiles_mentioned_in_tweet(request.data.get('content'))
+        hashtags = get_all_hashtags_in_tweet(request.data.get('content'))
+        
         tweet.mentions.set(mentions)
+        tweet.hashtags.set(hashtags)
 
     return Response(data={}, status=status.HTTP_201_CREATED)
 
@@ -37,15 +57,30 @@ def search_handlers(request, query):
     return Response(data, status=status.HTTP_200_OK)
 
 
+@login_required
+@api_view(['GET'])
+def search_hashtags(request, query):
+    queryset = Hashtag.objects.filter(name__icontains=query)
+    data = queryset.values_list('name', flat=True)
+
+    return Response(data, status=status.HTTP_200_OK)
+
+
 def get_tweet_content_with_links(content:str):
     content = content.split()
     
     for i in range(len(content)):
         word = content[i]
+        
         if word.startswith('@'):
             profile = get_all_profiles_mentioned_in_tweet(word)
             if profile:
                 content[i] = f"<a href='#'>@{profile[0].handler}</a>"
+        
+        if word.startswith('#'):
+            hashtag = get_all_hashtags_in_tweet(word)
+            if hashtag:
+                content[i] = f"<a href='#'>#{hashtag[0].name}</a>"
 
     return ' '.join(content)
     

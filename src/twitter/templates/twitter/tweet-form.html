@@ -11,6 +11,14 @@
                 @<span v-html="result"></span>
             </li>
         </ul>
+        <ul id="handler-search-results">
+            <li 
+                v-for="result in hashtagSearchResults" 
+                @click="replaceHashtag(result)"
+                class="handler-search-result">
+                @<span v-html="result"></span>
+            </li>
+        </ul>
         <div class="tweet-form-submit">
             <input type="submit" value="Tweet" class="btn btn-primary">
         </div>
