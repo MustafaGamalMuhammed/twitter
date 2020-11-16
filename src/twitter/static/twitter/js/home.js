@@ -61,6 +61,17 @@ let home = new Vue({
             })
             .catch(err => console.log(err))
         },
+        replay: function(tweet) {},
+        retweet: function(tweet) {
+            axios.post('retweet/', {'id': tweet.id})
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+        },
+        like: function(tweet) {
+            axios.post('like/', {'id': tweet.id})
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+        },
     },
     mounted: function() {
         axios.defaults.headers['X-CSRFToken'] = Cookies.get('csrftoken');

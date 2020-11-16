@@ -50,16 +50,20 @@ def get_tweet_content_with_links(content:str):
     return ' '.join(content)
     
 
-def get_data_from_tweets(tweets):
+def get_data_from_tweets(request, tweets):
     data = []
     
     for tweet in tweets:
         d = {}
-        d['tweet_id'] = tweet.id
-        d['tweet_content'] = get_tweet_content_with_links(tweet.content)
-        d['tweet_author_id'] = tweet.author.id
-        d['tweet_author_handler'] = tweet.author.handler
-        d['tweet_author_user_username'] = tweet.author.user.username
+        d['id'] = tweet.id
+        d['content'] = get_tweet_content_with_links(tweet.content)
+        d['author_id'] = tweet.author.id
+        d['author_handler'] = tweet.author.handler
+        d['author_user_username'] = tweet.author.user.username
+        d['retweeters_count'] = tweet.retweeters.count()
+        d['likers_count'] = tweet.likers.count()
+        d['is_liked'] = request.user.profile in tweet.likers.all()
+        d['is_retweeted'] = request.user.profile in tweet.retweeters.all()
         data.append(d)
     
     return data
@@ -69,7 +73,28 @@ def get_data_from_tweets(tweets):
 @api_view(['GET'])
 def get_tweets(request):
     tweets = request.user.profile.mentions.order_by('-created_at')
-    data = get_data_from_tweets(tweets)
+    data = get_data_from_tweets(request, tweets)
 
     return Response(data, status=status.HTTP_200_OK)
 
+
+@login_required
+@api_view(['POST'])
+def retweet(request):
+    try:
+        tweet = Tweet.objects.get(id=request.data.get('id'))
+        tweet.retweeters.add(request.user.profile)
+        return Response({}, status=status.HTTP_201_CREATED)
+    except Tweet.DoesNotExist:
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@login_required
+@api_view(['POST'])
+def like(request):
+    try:
+        tweet = Tweet.objects.get(id=request.data.get('id'))
+        tweet.likers.add(request.user.profile)
+        return Response({}, status=status.HTTP_201_CREATED)
+    except Tweet.DoesNotExist:
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)

@@ -24,10 +24,26 @@
     cursor: pointer;
 }
 
+.replay:hover {
+    color: rgb(61, 61, 243);
+}
+
 .retweet:hover {
     color: rgb(61, 61, 243);
 }
 
 .like:hover {
     color: rgb(236, 49, 59);
+}
+
+.blue {
+    color: rgb(61, 61, 243);
+}
+
+.pink {
+    color: rgb(236, 49, 59);
+}
+
+.interaction-count {
+    padding: 3px;
 }

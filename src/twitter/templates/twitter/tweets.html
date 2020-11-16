@@ -5,17 +5,17 @@
 
             </div>
             <div class="col-11">
-                <p v-html="tweet.tweet_author_user_username"></p>
-                <p><a href="#">@<span v-html="tweet.tweet_author_handler"></span></a></p>
+                <p v-html="tweet.author_user_username"></p>
+                <p><a href="#">@<span v-html="tweet.author_handler"></span></a></p>
             </div>
         </div>
         <div class="tweet-content">
-            <p v-html="tweet.tweet_content"></p>
+            <p v-html="tweet.content"></p>
         </div>
         <div class="tweet-interactions">
-            <div><i class="far fa-comment tweet-interaction"></i></div>
-            <div><i class="fas fa-retweet tweet-interaction retweet"></i></div>
-            <div><i class="far fa-heart tweet-interaction like"></i></div>
+            <div><i @click="replay(tweet)" class="far fa-comment tweet-interaction replay"></i></div>
+            <div><i @click="retweet(tweet)" class="fas fa-retweet tweet-interaction retweet" :class="{ blue: tweet.is_retweeted }"></i><span v-html="tweet.retweeters_count" class="interaction-count"></span></div>
+            <div><i @click="like(tweet)" class="far fa-heart tweet-interaction like" :class="{ pink: tweet.is_liked }"></i><span v-html="tweet.likers_count" class="interaction-count"></span></div>
         </div>
     </div>
 </div>
