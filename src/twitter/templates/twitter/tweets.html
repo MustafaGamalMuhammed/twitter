@@ -6,16 +6,16 @@
             </div>
             <div class="col-11">
                 <p v-html="tweet.tweet_author_user_username"></p>
-                <p>@<span v-html="tweet.tweet_author_handler"></span></p>
+                <p><a href="#">@<span v-html="tweet.tweet_author_handler"></span></a></p>
             </div>
         </div>
         <div class="tweet-content">
             <p v-html="tweet.tweet_content"></p>
         </div>
         <div class="tweet-interactions">
-            <div><i class="far fa-comment"></i></div>
-            <div><i class="fas fa-retweet"></i></div>
-            <div><i class="far fa-heart"></i></div>
+            <div><i class="far fa-comment tweet-interaction"></i></div>
+            <div><i class="fas fa-retweet tweet-interaction retweet"></i></div>
+            <div><i class="far fa-heart tweet-interaction like"></i></div>
         </div>
     </div>
 </div>

@@ -38,13 +38,26 @@ def search_handlers(request, query):
     return Response(data, status=status.HTTP_200_OK)
 
 
+def get_tweet_content_with_links(content:str):
+    content = content.split()
+    
+    for i in range(len(content)):
+        word = content[i]
+        if word.startswith('@'):
+            profile = get_all_profiles_mentioned_in_tweet(word)
+            if profile:
+                content[i] = f"<a href='#'>@{profile[0].handler}</a>"
+
+    return ' '.join(content)
+    
+
 def get_data_from_tweets(tweets):
     data = []
     
     for tweet in tweets:
         d = {}
         d['tweet_id'] = tweet.id
-        d['tweet_content'] = tweet.content
+        d['tweet_content'] = get_tweet_content_with_links(tweet.content)
         d['tweet_author_id'] = tweet.author.id
         d['tweet_author_handler'] = tweet.author.handler
         d['tweet_author_user_username'] = tweet.author.user.username
@@ -56,7 +69,7 @@ def get_data_from_tweets(tweets):
 @login_required
 @api_view(['GET'])
 def get_tweets(request):
-    tweets = request.user.profile.mentions.all().order_by('created_at')
+    tweets = request.user.profile.mentions.order_by('-created_at')
     data = get_data_from_tweets(tweets)
 
     return Response(data, status=status.HTTP_200_OK)
