@@ -1,5 +1,6 @@
 from django.db import models
 from .profile import Profile
+from .hashtag import Hashtag
 
 
 class Tweet(models.Model):
@@ -7,7 +8,8 @@ class Tweet(models.Model):
     mentions = models.ManyToManyField(Profile, related_name="mentions")
     retweeters = models.ManyToManyField(Profile, related_name="retweets")
     likers = models.ManyToManyField(Profile, related_name="likes")
-    content = models.CharField(max_length=400)
+    hashtags = models.ManyToManyField(Hashtag, related_name="tweets")
+    content = models.CharField(max_length=140)
     created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):

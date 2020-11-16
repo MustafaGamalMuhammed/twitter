@@ -13,7 +13,6 @@ let home = new Vue({
             let data = new FormData(e.target);
             axios.post('post_tweet/', data)
             .then(res => {
-                console.log(res);
                 this.clearTweetForm();
             })
             .catch(err => console.log(err));
@@ -38,7 +37,6 @@ let home = new Vue({
         searchHandlers: function(handler) {
             axios.get(`/search_handlers/${handler[0].slice(1)}/`,)
             .then(res => {
-                console.log(res.data);
                 this.handlerSearchResults = res.data;
             })
             .catch(err => console.log(err))
@@ -56,21 +54,28 @@ let home = new Vue({
         getTweets: function() {
             axios.get('/get_tweets/')
             .then(res => {
-                console.log(res.data);
                 this.tweets = res.data;
             })
             .catch(err => console.log(err))
         },
         replay: function(tweet) {},
         retweet: function(tweet) {
-            axios.post('retweet/', {'id': tweet.id})
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+            if(!tweet.is_retweeted) {
+                tweet.is_retweeted = true;
+                tweet.retweeters_count++;
+                axios.post('retweet/', {'id': tweet.id})
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+            }
         },
         like: function(tweet) {
-            axios.post('like/', {'id': tweet.id})
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+            if(!tweet.is_liked) {
+                tweet.is_liked = true;
+                tweet.likers_count++;
+                axios.post('like/', {'id': tweet.id})
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+            }
         },
     },
     mounted: function() {
