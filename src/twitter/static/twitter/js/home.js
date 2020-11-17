@@ -12,7 +12,7 @@ let home = new Vue({
     methods: {
         postTweet: function(e) {
             let data = new FormData(e.target);
-            axios.post('post_tweet/', data)
+            axios.post('/post_tweet/', data)
             .then(res => {
                 this.clearTweetForm();
             })
@@ -83,7 +83,13 @@ let home = new Vue({
             this.clearHashtagSearchResults();
         },
         getTweets: function() {
-            axios.get('/get_tweets/')
+            let url = '/get_tweets/'
+
+            if(document.location.pathname.endsWith('profile/')) {
+                url = url + 'profile/'
+            }
+                        
+            axios.get(url)
             .then(res => {
                 this.tweets = res.data;
             })

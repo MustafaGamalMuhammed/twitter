@@ -107,8 +107,12 @@ def get_data_from_tweets(request, tweets):
 
 @login_required
 @api_view(['GET'])
-def get_tweets(request):
-    tweets = request.user.profile.mentions.order_by('-created_at')
+def get_tweets(request, view=None):
+    if view == 'profile':
+        tweets = request.user.profile.tweets.all().union(request.user.profile.retweets.all()).order_by('-created_at')
+    else:
+        tweets = request.user.profile.mentions.order_by('-created_at')
+        
     data = get_data_from_tweets(request, tweets)
 
     return Response(data, status=status.HTTP_200_OK)
