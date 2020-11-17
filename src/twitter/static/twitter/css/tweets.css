@@ -33,15 +33,11 @@
 }
 
 .like:hover {
-    color: rgb(236, 49, 59);
+    color: rgb(61, 61, 243);
 }
 
 .blue {
     color: rgb(61, 61, 243);
-}
-
-.pink {
-    color: rgb(236, 49, 59);
 }
 
 .interaction-count {

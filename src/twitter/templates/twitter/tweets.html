@@ -15,7 +15,7 @@
         <div class="tweet-interactions">
             <div><i @click="replay(tweet)" class="far fa-comment tweet-interaction replay"></i></div>
             <div><i @click="retweet(tweet)" class="fas fa-retweet tweet-interaction retweet" :class="{ blue: tweet.is_retweeted }"></i><span v-html="tweet.retweeters_count" class="interaction-count"></span></div>
-            <div><i @click="like(tweet)" class="far fa-heart tweet-interaction like" :class="{ pink: tweet.is_liked }"></i><span v-html="tweet.likers_count" class="interaction-count"></span></div>
+            <div><i @click="like(tweet)" class="far fa-heart tweet-interaction like" :class="{ blue: tweet.is_liked }"></i><span v-html="tweet.likers_count" class="interaction-count"></span></div>
         </div>
     </div>
 </div>
