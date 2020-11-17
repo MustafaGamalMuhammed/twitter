@@ -21,4 +21,12 @@ home_urlpatterns = [
     path('', views.home_view, name="home")
 ]
 
-urlpatterns = authentication_urlpatterns + tweet_urlpatterns + home_urlpatterns
+profile_urlpatterns = [
+    path('profile/', views.profile_view, name="profile")
+]
+
+urlpatterns = []
+urlpatterns.extend(authentication_urlpatterns)
+urlpatterns.extend(tweet_urlpatterns)
+urlpatterns.extend(home_urlpatterns)
+urlpatterns.extend(profile_urlpatterns)

@@ -34,10 +34,10 @@
 }
 
 .tweet-form textarea {
-    margin: 5px 0;
+    margin: 5px auto;
     display: block;
     border: none;
-    width: 100%;
+    width: 90%;
     height: 100px;
 
     border-bottom: 1px solid #eee;

@@ -95,6 +95,7 @@ def get_data_from_tweets(request, tweets):
         d['author_id'] = tweet.author.id
         d['author_handler'] = tweet.author.handler
         d['author_user_username'] = tweet.author.user.username
+        d['author_image'] = tweet.author.image.url
         d['retweeters_count'] = tweet.retweeters.count()
         d['likers_count'] = tweet.likers.count()
         d['is_liked'] = request.user.profile in tweet.likers.all()

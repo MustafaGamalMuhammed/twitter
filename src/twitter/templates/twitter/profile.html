@@ -1,0 +1,63 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="home" id="home">
+    <div class="row">
+        {% include './navigation.html' %}
+        <div class="col-7 tweets-section">
+            {% if other_profile %}
+            <h2>{{ profile.user.username }}</h2>
+            <div class="profile-header">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="{{ profile.image.url }}" alt="" class="profile-img">
+                        <div>
+                            <p>{{ profile.user.username }}</p>
+                            <p>@<span>{{ profile.handler }}</span></p>
+                        </div>
+                    </div>
+                    <div class="col-9">
+                        <div class="follow">
+                            <button class="btn btn-primary">Follow</button>
+                        </div>
+                        <div class="profile-info">
+                            <p>{{ profile.f2.count }} Following</p>
+                            <p>{{ profile.f1.count }} Followers</p>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            {% else %}
+            <h2>{{ user.username }}</h2>
+            <div class="profile-header">
+                <div class="row">
+                    <div class="col-3">
+                        <div>
+                            <p>{{ user.username }}</p>
+                            <p>@<span>{{ user.profile.handler }}</span></p>
+                        </div>
+                    </div>
+                    <div class="col-9">
+                        <div class="follow">
+                            
+                        </div>
+                        <div class="profile-info">
+                            <p>{{ user.profile.f2.count }} Following</p>
+                            <p>{{ user.profile.f1.count }} Followers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% include './tweet-form.html' %}
+            {% include './tweets.html' %}
+        </div>
+        <div class="col-4">
+            what is happening
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'twitter/js/home.js' %}"></script>
+{% endblock content %}

@@ -2,9 +2,11 @@
     <div v-for="tweet in tweets" class="tweet">
         <div class="tweet-header row">
             <div class="col-1">
-
+                <div>
+                    <img :src="tweet.author_image" alt="" class="profile-img">
+                </div>
             </div>
-            <div class="col-11">
+            <div class="col-11 tweet-header">
                 <p v-html="tweet.author_user_username"></p>
                 <p><a href="#">@<span v-html="tweet.author_handler"></span></a></p>
             </div>

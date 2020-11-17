@@ -43,3 +43,15 @@
 .interaction-count {
     padding: 3px;
 }
+
+.profile-img {
+    display: block;
+    margin: auto;
+    max-width: 50px;
+    max-height: 50px;
+    border-radius: 50%;
+}
+
+.tweet-header {
+    padding-left: 25px;
+}
