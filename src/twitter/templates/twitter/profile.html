@@ -10,47 +10,88 @@
             <h2>{{ profile.user.username }}</h2>
             <div class="profile-header">
                 <div class="row">
-                    <div class="col-3">
-                        <img src="{{ profile.image.url }}" alt="" class="profile-img">
-                        <div>
-                            <p>{{ profile.user.username }}</p>
-                            <p>@<span>{{ profile.handler }}</span></p>
-                        </div>
-                    </div>
-                    <div class="col-9">
-                        <div class="follow">
-                            <button class="btn btn-primary">Follow</button>
-                        </div>
-                        <div class="profile-info">
-                            <p>{{ profile.f2.count }} Following</p>
-                            <p>{{ profile.f1.count }} Followers</p>
-                        </div>
-                    </div>
+                    <table>
+                        <tr>
+                            <td class="col-4">
+                                <img src="{{ profile.image.url }}" alt="" class="profile-img">
+                            </td>
+                            <td class="col-4">
+
+                            </td>
+                            <td class="follow col-4">
+                                <button class="btn btn-primary">Follow</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-4">
+                                <p>{{ profile.user.username }}</p>
+                            </td>
+                            <td class="col-4">
+                                <p>{{ profile.f2.count }} Following</p>
+                            </td>
+                            <td class="col-4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-4">
+                                <p>@<span>{{ profile.handler }}</span></p>
+                            </td>
+                            <td class="col-4">
+                                <p>{{ profile.f1.count }} Followers</p>
+                            </td>
+                            <td class="col-4">
+                            </td>
+                        </tr>
+                    </table>
                 </div>    
             </div>
             {% else %}
             <h2>{{ user.username }}</h2>
             <div class="profile-header">
                 <div class="row">
-                    <div class="col-3">
-                        <div>
-                            <p>{{ user.username }}</p>
-                            <p>@<span>{{ user.profile.handler }}</span></p>
-                        </div>
-                    </div>
-                    <div class="col-9">
-                        <div class="follow">
+                    <table>
+                        <tr>
+                            <td class="col-4">
+                                <img src="{{ user.profile.image.url }}" alt="" class="profile-img">
+                            </td>
+                            <td class="col-4">
+
+                            </td>
+                            <td class="follow col-4">
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-4">
+                                <p>{{ user.username }}</p>
+                            </td>
+                            <td class="col-4">
+                                <p>{{ user.profile.f2.count }} Following</p>
+                            </td>
+                            <td class="col-4">
                             
-                        </div>
-                        <div class="profile-info">
-                            <p>{{ user.profile.f2.count }} Following</p>
-                            <p>{{ user.profile.f1.count }} Followers</p>
-                        </div>
-                    </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-4">
+                                <p>@<span>{{ user.profile.handler }}</span></p>
+                            </td>
+                            <td class="col-4">
+                                <p>{{ user.profile.f1.count }} Followers</p>
+                            </td>
+                            <td class="col-4">
+                                
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             {% endif %}
-            {% include './tweet-form.html' %}
+            
+            {% if other_profile is not True %}
+                {% include './tweet-form.html' %}
+            {% endif %}
+            
             {% include './tweets.html' %}
         </div>
         <div class="col-4">

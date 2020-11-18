@@ -6,7 +6,7 @@ def profile_view(request, id=None):
     context = {}
     
     if id:
-        context['other_profile'] = False
+        context['other_profile'] = True
         context['profile'] = get_object_or_404(Profile, id=id)
 
 
