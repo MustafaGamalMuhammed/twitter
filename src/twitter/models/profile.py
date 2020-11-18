@@ -10,6 +10,11 @@ class Profile(models.Model):
     following = models.ManyToManyField("Profile", related_name="f2", blank=True)
     image = models.ImageField(upload_to="profile_pics", default="default.jpg")
 
+    def follow(self, profile):
+        if profile not in self.following.all():
+            self.following.add(profile)
+            profile.followers.add(self)
+
     def __str__(self):
         return self.user.username
 

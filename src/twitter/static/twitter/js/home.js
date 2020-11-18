@@ -114,6 +114,15 @@ let home = new Vue({
                 .catch(err => console.log(err))
             }
         },
+        follow: function(id) {
+            axios.post('/follow/', {id: id})
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
     },
     mounted: function() {
         axios.defaults.headers['X-CSRFToken'] = Cookies.get('csrftoken');

@@ -8,7 +8,7 @@
             </div>
             <div class="col-11 tweet-header">
                 <p v-html="tweet.author_user_username"></p>
-                <p><a href="#">@<span v-html="tweet.author_handler"></span></a></p>
+                <p><a :href="tweet.author_url">@<span v-html="tweet.author_handler"></span></a></p>
             </div>
         </div>
         <div class="tweet-content">

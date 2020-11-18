@@ -1,3 +1,4 @@
+from django.shortcuts import reverse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -75,7 +76,7 @@ def get_tweet_content_with_links(content:str):
         if word.startswith('@'):
             profile = get_all_profiles_mentioned_in_tweet(word)
             if profile:
-                content[i] = f"<a href='#'>@{profile[0].handler}</a>"
+                content[i] = f"<a href='/profile/{profile[0].id}/'>@{profile[0].handler}</a>"
         
         if word.startswith('#'):
             hashtag = get_all_hashtags_in_tweet(word)
@@ -96,6 +97,7 @@ def get_data_from_tweets(request, tweets):
         d['author_handler'] = tweet.author.handler
         d['author_user_username'] = tweet.author.user.username
         d['author_image'] = tweet.author.image.url
+        d['author_url'] = reverse('profile', args=(tweet.author.id,))
         d['retweeters_count'] = tweet.retweeters.count()
         d['likers_count'] = tweet.likers.count()
         d['is_liked'] = request.user.profile in tweet.likers.all()
