@@ -1,4 +1,4 @@
-from django.shortcuts import reverse, get_object_or_404
+from django.shortcuts import reverse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -39,10 +39,8 @@ def post_tweet(request):
     form = TweetForm(request.data)
     if form.is_valid():
         tweet = form.save()
-
         mentions = get_all_profiles_mentioned_in_tweet(request.data.get('content'))
         hashtags = get_all_hashtags_in_tweet(request.data.get('content'))
-        
         tweet.mentions.set(mentions)
         tweet.hashtags.set(hashtags)
 
@@ -110,8 +108,7 @@ def get_data_from_tweets(request, tweets):
 @login_required
 @api_view(['GET'])
 def get_home_tweets(request):
-    tweets = request.user.profile.mentions.order_by('-created_at')
-        
+    tweets = request.user.profile.mentions.order_by('-created_at')        
     data = get_data_from_tweets(request, tweets)
 
     return Response(data, status=status.HTTP_200_OK)
@@ -120,8 +117,7 @@ def get_home_tweets(request):
 @login_required
 @api_view(['GET'])
 def get_my_tweets(request):
-    tweets = request.user.profile.tweets.all().union(request.user.profile.retweets.all()).order_by('-created_at')
-    
+    tweets = request.user.profile.tweets.all().union(request.user.profile.retweets.all()).order_by('-created_at')    
     data = get_data_from_tweets(request, tweets)
 
     return Response(data, status=status.HTTP_200_OK)
@@ -130,12 +126,15 @@ def get_my_tweets(request):
 @login_required
 @api_view(['GET'])
 def get_profile_tweets(request, id):
-    profile = get_object_or_404(Profile, id=id)
-    tweets = profile.tweets.all().union(profile.retweets.all()).order_by('-created_at')
+    try:
+        profile = Profile.objects.get(id=id)
+        tweets = profile.tweets.all().union(profile.retweets.all()).order_by('-created_at')
+        data = get_data_from_tweets(request, tweets)
         
-    data = get_data_from_tweets(request, tweets)
-
-    return Response(data, status=status.HTTP_200_OK)
+        return Response(data, status=status.HTTP_200_OK)
+    except Profile.DoesNotExist:
+        
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @login_required
