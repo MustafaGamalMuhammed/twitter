@@ -12,8 +12,9 @@ tweet_urlpatterns = [
     path('post_tweet/', views.post_tweet, name="post_tweet"),
     path('search_handlers/<str:query>/', views.search_handlers, name="search_handlers"),
     path('search_hashtags/<str:query>/', views.search_hashtags, name="search_hashtags"),
-    path('get_tweets/', views.get_tweets, name="get_tweets"),
-    path('get_tweets/<str:view>/', views.get_tweets, name="get_tweets"),
+    path('get_tweets/', views.get_home_tweets, name="get_home_tweets"),
+    path('get_tweets/profile/', views.get_my_tweets, name="get_my_tweets"),
+    path('get_tweets/profile/<int:id>/', views.get_profile_tweets, name="get_profile_tweets"),
     path('retweet/', views.retweet, name="retweet"),
     path('like/', views.like, name="like"),
 ]

@@ -10,7 +10,7 @@ from twitter.models import Profile
 def profile_view(request, id=None):
     context = {}
     
-    if id and id != request.user.id:
+    if id and id != request.user.profile.id:
         context['other_profile'] = True
         context['profile'] = get_object_or_404(Profile, id=id)
     else:

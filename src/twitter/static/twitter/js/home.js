@@ -83,13 +83,7 @@ let home = new Vue({
             this.clearHashtagSearchResults();
         },
         getTweets: function() {
-            let url = '/get_tweets/'
-
-            if(document.location.pathname.endsWith('profile/')) {
-                url = url + 'profile/'
-            }
-                        
-            axios.get(url)
+            axios.get(`/get_tweets${document.location.pathname}`)
             .then(res => {
                 this.tweets = res.data;
             })
