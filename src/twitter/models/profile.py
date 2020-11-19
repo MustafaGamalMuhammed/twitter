@@ -19,7 +19,7 @@ class Profile(models.Model):
         tweets = None
 
         for f in self.following.all():
-            following_tweets = f.tweets.all()[:10]
+            following_tweets = f.tweets.order_by('-created_at')[:10]
             
             if tweets == None:
                 tweets = following_tweets
