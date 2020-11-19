@@ -1,3 +1,4 @@
+from django.shortcuts import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
@@ -27,6 +28,9 @@ class Profile(models.Model):
                 tweets = tweets.union(following_tweets)
             
         return tweets
+
+    def get_absolute_url(self):
+        return reverse('profile', args=(self.id,))
 
     def __str__(self):
         return self.user.username

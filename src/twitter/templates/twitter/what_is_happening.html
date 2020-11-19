@@ -1,0 +1,14 @@
+<div>
+    <div class="search">
+        <input v-model:value="searchQuery" type="text" id="search" class="form-control">
+        <ul class="search-results">
+            <li 
+                v-for="result in searchResults"
+                class="search-result">
+                <a :href="result.url">
+                    <span v-html="result.user_username"></span> (@<span v-html="result.handler"></span>)
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

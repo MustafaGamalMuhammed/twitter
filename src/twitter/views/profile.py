@@ -28,3 +28,28 @@ def follow_view(request):
     request.user.profile.follow(profile)
 
     return Response(data={}, status=status.HTTP_200_OK)
+
+
+def get_search_data(profiles):
+    data = []
+
+    for profile in profiles:
+        d = {}
+        d['id'] = profile.id
+        d['url'] = profile.get_absolute_url()
+        d['user_username'] = profile.user.username
+        d['handler'] = profile.handler
+        data.append(d)
+
+    return data
+
+@login_required
+@api_view(['GET'])
+def search(request, query):
+    q1 = Profile.objects.filter(user__username__icontains=query)
+    q2 = Profile.objects.filter(handler__icontains=query)
+    q = q1.union(q2)
+
+    data = get_search_data(q)
+
+    return Response(data, status=status.HTTP_200_OK)

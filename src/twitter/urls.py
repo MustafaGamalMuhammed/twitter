@@ -27,6 +27,7 @@ profile_urlpatterns = [
     path('profile/', views.profile_view, name="profile"),
     path('profile/<int:id>/', views.profile_view, name="profile"),
     path('follow/', views.follow_view, name="follow"),
+    path('search/<str:query>/', views.search, name="search"),
 ]
 
 urlpatterns = []

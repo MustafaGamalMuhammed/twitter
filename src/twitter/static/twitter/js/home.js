@@ -7,6 +7,8 @@ let home = new Vue({
             currentHandler: null,
             handlerSearchResults: [],
             hashtagSearchResults: [],
+            searchResults: [],
+            searchQuery: null,
         };
     },
     methods: {
@@ -95,7 +97,6 @@ let home = new Vue({
                 tweet.is_retweeted = true;
                 tweet.retweeters_count++;
                 axios.post('retweet/', {'id': tweet.id})
-                .then(res => console.log(res))
                 .catch(err => console.log(err))
             }
         },
@@ -104,15 +105,11 @@ let home = new Vue({
                 tweet.is_liked = true;
                 tweet.likers_count++;
                 axios.post('like/', {'id': tweet.id})
-                .then(res => console.log(res))
                 .catch(err => console.log(err))
             }
         },
         follow: function(id) {
             axios.post('/follow/', {id: id})
-            .then(res => {
-                console.log(res);
-            })
             .catch(err => {
                 console.log(err);
             })
@@ -139,6 +136,17 @@ let home = new Vue({
                 this.currentHashtag = hashtag;
             } else if(this.hashtagSearchResults.length > 0) {
                 this.clearHashtagSearchResults();
+            }
+        },
+        searchQuery: function(newVal, oldVal) {
+            if(newVal.length > 0) {
+                axios.get(`/search/${newVal}/`)
+                .then(res => {
+                    this.searchResults = res.data;
+                })
+                .catch(res => console.log(res))
+            } else {
+                this.searchResults = [];
             }
         }
     },
