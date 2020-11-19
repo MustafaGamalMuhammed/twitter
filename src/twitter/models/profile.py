@@ -15,6 +15,19 @@ class Profile(models.Model):
             self.following.add(profile)
             profile.followers.add(self)
 
+    def get_following_tweets(self):
+        tweets = None
+
+        for f in self.following.all():
+            following_tweets = f.tweets.all()[:10]
+            
+            if tweets == None:
+                tweets = following_tweets
+            else:
+                tweets = tweets.union(following_tweets)
+            
+        return tweets
+
     def __str__(self):
         return self.user.username
 

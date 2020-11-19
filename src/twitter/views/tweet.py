@@ -1,8 +1,9 @@
 from django.shortcuts import reverse
+from django.contrib.auth.decorators import login_required
+from django.db.models import QuerySet
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth.decorators import login_required
 from twitter.models import Profile, Tweet, Hashtag
 from twitter.forms import TweetForm
 import re
@@ -108,7 +109,13 @@ def get_data_from_tweets(request, tweets):
 @login_required
 @api_view(['GET'])
 def get_home_tweets(request):
-    tweets = request.user.profile.mentions.order_by('-created_at')        
+    profile = request.user.profile
+    tweets = profile.mentions.all()
+    following_tweets = profile.get_following_tweets()
+    
+    if following_tweets:
+        tweets = (tweets | following_tweets).order_by('-created_at')
+
     data = get_data_from_tweets(request, tweets)
 
     return Response(data, status=status.HTTP_200_OK)
@@ -117,7 +124,10 @@ def get_home_tweets(request):
 @login_required
 @api_view(['GET'])
 def get_my_tweets(request):
-    tweets = request.user.profile.tweets.all().union(request.user.profile.retweets.all()).order_by('-created_at')    
+    tweets = request.user.profile.tweets.all()    
+    retweets = request.user.profile.retweets.all()
+    tweets = tweets.union(retweets).order_by('-created_at')
+
     data = get_data_from_tweets(request, tweets)
 
     return Response(data, status=status.HTTP_200_OK)
@@ -128,7 +138,10 @@ def get_my_tweets(request):
 def get_profile_tweets(request, id):
     try:
         profile = Profile.objects.get(id=id)
-        tweets = profile.tweets.all().union(profile.retweets.all()).order_by('-created_at')
+        tweets = profile.tweets.all()
+        retweets = profile.retweets.all()
+        tweets = tweets.union(retweets).order_by('-created_at')
+        
         data = get_data_from_tweets(request, tweets)
         
         return Response(data, status=status.HTTP_200_OK)
