@@ -15,6 +15,7 @@ tweet_urlpatterns = [
     path('get_tweets/', views.get_home_tweets, name="get_home_tweets"),
     path('get_tweets/profile/', views.get_my_tweets, name="get_my_tweets"),
     path('get_tweets/profile/<int:id>/', views.get_profile_tweets, name="get_profile_tweets"),
+    path('get_tweets/hashtag/<int:id>/', views.get_hashtag_tweets),
     path('retweet/', views.retweet, name="retweet"),
     path('like/', views.like, name="like"),
 ]
@@ -31,6 +32,7 @@ profile_urlpatterns = [
 ]
 
 hashtag_urlpatterns = [
+    path('hashtag/<int:id>/', views.hashtag_view, name="hashtag"),
     path('get_most_used_hashtags/', views.get_most_used_hashtags),
 ]
 

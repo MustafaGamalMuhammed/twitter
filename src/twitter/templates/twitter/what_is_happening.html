@@ -14,7 +14,7 @@
     <div class="most-used-hashtags">
         <h4>MOST USED HASHTAGS</h4>
         <div v-for="hashtag in mostUsedHashtags">
-            <a href="#">#<span v-html="hashtag.name"></span></a> <span v-html="hashtag.usage_count"></span>
+            <a :href="hashtag.url">#<span v-html="hashtag.name"></span></a> (<span v-html="hashtag.usage_count"></span>)
         </div>
     </div>
 </div>

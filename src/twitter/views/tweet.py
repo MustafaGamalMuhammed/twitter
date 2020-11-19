@@ -156,6 +156,20 @@ def get_profile_tweets(request, id):
 
 
 @login_required
+@api_view(['GET'])
+def get_hashtag_tweets(request, id):
+    try:
+        hashtag = Hashtag.objects.get(id=id)
+        tweets = hashtag.tweets.order_by('-created_at')
+
+        data = get_data_from_tweets(request, tweets)
+
+        return Response(data, status=status.HTTP_200_OK)
+    except Hashtag.DoesNotExist:
+        print(Hashtag.DoesNotExist)
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+@login_required
 @api_view(['POST'])
 def retweet(request):
     try:
