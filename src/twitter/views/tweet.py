@@ -20,13 +20,18 @@ def get_all_profiles_mentioned_in_tweet(content:str):
     return profiles
 
 
-def get_all_hashtags_in_tweet(content:str):
+def get_all_hashtags_in_tweet(content:str, post:bool=False):
     hashtags = re.findall(r'#(\w+)', content)
     results = []
 
     if hashtags:
         for hashtag in hashtags:
-            h, _ = Hashtag.objects.get_or_create(name=hashtag)
+            h, created = Hashtag.objects.get_or_create(name=hashtag)
+            
+            if not created and post:
+                h.usage_count += 1
+                h.save()
+            
             results.append(h)
     else:
         results = []
@@ -41,7 +46,7 @@ def post_tweet(request):
     if form.is_valid():
         tweet = form.save()
         mentions = get_all_profiles_mentioned_in_tweet(request.data.get('content'))
-        hashtags = get_all_hashtags_in_tweet(request.data.get('content'))
+        hashtags = get_all_hashtags_in_tweet(request.data.get('content'), True)
         tweet.mentions.set(mentions)
         tweet.hashtags.set(hashtags)
 

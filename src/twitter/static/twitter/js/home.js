@@ -8,6 +8,7 @@ let home = new Vue({
             handlerSearchResults: [],
             hashtagSearchResults: [],
             searchResults: [],
+            mostUsedHashtags: [],
             searchQuery: null,
         };
     },
@@ -113,11 +114,19 @@ let home = new Vue({
             .catch(err => {
                 console.log(err);
             })
-        }
+        },
+        getMostUsedHashtags: function() {
+            axios.get('/get_most_used_hashtags/')
+            .then(res => {
+                this.mostUsedHashtags = res.data;
+            })
+            .catch(err => console.log(err))
+        },
     },
     mounted: function() {
         axios.defaults.headers['X-CSRFToken'] = Cookies.get('csrftoken');
         this.getTweets();
+        this.getMostUsedHashtags();
     },
     watch: {
         tweetContent: function(newVal, oldVal) {

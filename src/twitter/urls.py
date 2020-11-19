@@ -30,8 +30,13 @@ profile_urlpatterns = [
     path('search/<str:query>/', views.search, name="search"),
 ]
 
+hashtag_urlpatterns = [
+    path('get_most_used_hashtags/', views.get_most_used_hashtags),
+]
+
 urlpatterns = []
 urlpatterns.extend(authentication_urlpatterns)
 urlpatterns.extend(tweet_urlpatterns)
 urlpatterns.extend(home_urlpatterns)
 urlpatterns.extend(profile_urlpatterns)
+urlpatterns.extend(hashtag_urlpatterns)

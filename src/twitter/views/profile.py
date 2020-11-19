@@ -30,7 +30,7 @@ def follow_view(request):
     return Response(data={}, status=status.HTTP_200_OK)
 
 
-def get_search_data(profiles):
+def get_data_from_profiles(profiles):
     data = []
 
     for profile in profiles:
@@ -50,6 +50,6 @@ def search(request, query):
     q2 = Profile.objects.filter(handler__icontains=query)
     q = q1.union(q2)
 
-    data = get_search_data(q)
+    data = get_data_from_profiles(q)
 
     return Response(data, status=status.HTTP_200_OK)

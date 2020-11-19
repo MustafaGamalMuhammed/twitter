@@ -11,3 +11,11 @@
 .search-results li {
     border-bottom: 1px solid #eee;
 }
+
+.most-used-hashtags {
+    margin: 30px 0;
+}
+
+.most-used-hashtags a {
+    font-size: 20px;
+}
