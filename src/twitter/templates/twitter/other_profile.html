@@ -5,48 +5,51 @@
 <div class="home" id="home">
     <div class="row">
         {% include './navigation.html' %}
-        <div class="col-7 tweets-section">    
-            <h2>{{ user.username }}</h2>
+        <div class="col-7 tweets-section">
+            <h2>{{ profile.user.username }}</h2>
             <div class="profile-header">
                 <div class="row">
                     <table>
                         <tr>
                             <td class="col-4">
-                                <img src="{{ user.profile.image.url }}" alt="" class="profile-img">
+                                <img src="{{ profile.image.url }}" alt="" class="profile-img">
                             </td>
                             <td class="col-4">
 
                             </td>
                             <td class="follow col-4">
-                                
+                                {% if profile in user.profile.following.all %}
+                                    <button class="btn btn-primary">Following</button>
+                                {% else %}
+                                    <button @click="follow({{ profile.id }})" class="btn btn-primary">Follow</button>
+                                {% endif %}
                             </td>
                         </tr>
                         <tr>
                             <td class="col-4">
-                                <p>{{ user.username }}</p>
+                                <p>{{ profile.user.username }}</p>
                             </td>
                             <td class="col-4">
-                                <p>{{ user.profile.following.count }} Following</p>
+                                <p>{{ profile.following.count }} Following</p>
                             </td>
                             <td class="col-4">
-                            
                             </td>
                         </tr>
                         <tr>
                             <td class="col-4">
-                                <p>@<span>{{ user.profile.handler }}</span></p>
+                                <p>@<span>{{ profile.handler }}</span></p>
                             </td>
                             <td class="col-4">
-                                <p>{{ user.profile.followers.count }} Followers</p>
+                                <p>{{ profile.followers.count }} Followers</p>
                             </td>
                             <td class="col-4">
-                                
                             </td>
                         </tr>
                     </table>
-                </div>
+                </div>    
             </div>
             
+            {% include './tweet-form.html' %}
             {% include './tweets.html' %}
         </div>
         <div class="col-4">
