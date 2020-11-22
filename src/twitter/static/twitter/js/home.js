@@ -105,7 +105,7 @@ let home = new Vue({
             if(!tweet.is_liked) {
                 tweet.is_liked = true;
                 tweet.likers_count++;
-                axios.post('like/', {'id': tweet.id})
+                axios.post('/like/', {'id': tweet.id})
                 .catch(err => console.log(err))
             }
         },
