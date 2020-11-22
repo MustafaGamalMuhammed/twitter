@@ -39,6 +39,47 @@ def get_all_hashtags_in_tweet(content:str, post:bool=False):
     return results
 
 
+def get_tweet_content_with_links(content:str):
+    content = content.split()
+    
+    for i in range(len(content)):
+        word = content[i]
+        
+        if word.startswith('@'):
+            profile = get_all_profiles_mentioned_in_tweet(word)
+            if profile:
+                content[i] = f"<a href='/profile/{profile[0].id}/'>@{profile[0].handler}</a>"
+        
+        if word.startswith('#'):
+            hashtag = get_all_hashtags_in_tweet(word)
+            if hashtag:
+                content[i] = f"<a href='#'>#{hashtag[0].name}</a>"
+
+    return ' '.join(content)
+    
+
+def get_data_from_tweets(request, tweets):
+    data = []
+    
+    for tweet in tweets:
+        d = {}
+        d['id'] = tweet.id
+        d['content'] = get_tweet_content_with_links(tweet.content)
+        d['author_id'] = tweet.author.id
+        d['user_id'] = request.user.profile.id
+        d['author_handler'] = tweet.author.handler
+        d['author_user_username'] = tweet.author.user.username
+        d['author_image'] = tweet.author.image.url
+        d['author_url'] = reverse('profile', args=(tweet.author.id,))
+        d['retweeters_count'] = tweet.retweeters.count()
+        d['likers_count'] = tweet.likers.count()
+        d['is_liked'] = request.user.profile in tweet.likers.all()
+        d['is_retweeted'] = request.user.profile in tweet.retweeters.all()
+        data.append(d)
+    
+    return data
+
+
 @login_required
 @api_view(['POST'])
 def post_tweet(request):
@@ -69,46 +110,6 @@ def search_hashtags(request, query):
     data = queryset.values_list('name', flat=True)
 
     return Response(data, status=status.HTTP_200_OK)
-
-
-def get_tweet_content_with_links(content:str):
-    content = content.split()
-    
-    for i in range(len(content)):
-        word = content[i]
-        
-        if word.startswith('@'):
-            profile = get_all_profiles_mentioned_in_tweet(word)
-            if profile:
-                content[i] = f"<a href='/profile/{profile[0].id}/'>@{profile[0].handler}</a>"
-        
-        if word.startswith('#'):
-            hashtag = get_all_hashtags_in_tweet(word)
-            if hashtag:
-                content[i] = f"<a href='#'>#{hashtag[0].name}</a>"
-
-    return ' '.join(content)
-    
-
-def get_data_from_tweets(request, tweets):
-    data = []
-    
-    for tweet in tweets:
-        d = {}
-        d['id'] = tweet.id
-        d['content'] = get_tweet_content_with_links(tweet.content)
-        d['author_id'] = tweet.author.id
-        d['author_handler'] = tweet.author.handler
-        d['author_user_username'] = tweet.author.user.username
-        d['author_image'] = tweet.author.image.url
-        d['author_url'] = reverse('profile', args=(tweet.author.id,))
-        d['retweeters_count'] = tweet.retweeters.count()
-        d['likers_count'] = tweet.likers.count()
-        d['is_liked'] = request.user.profile in tweet.likers.all()
-        d['is_retweeted'] = request.user.profile in tweet.retweeters.all()
-        data.append(d)
-    
-    return data
 
 
 @login_required
@@ -168,6 +169,7 @@ def get_hashtag_tweets(request, id):
     except Hashtag.DoesNotExist:
         print(Hashtag.DoesNotExist)
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
 
 @login_required
 @api_view(['POST'])

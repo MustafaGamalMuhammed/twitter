@@ -1,5 +1,9 @@
 <div class="tweets">
     <div v-for="tweet in tweets" class="tweet">
+        <div v-if="tweet.author_id == tweet.user_id" class="retweet-header">
+            <i class="fas fa-retweet"></i> from 
+            <a :href="tweet.author_url">@<span v-html="tweet.author_handler"></span></a>
+        </div>
         <div class="tweet-header row">
             <div class="col-1">
                 <div>
